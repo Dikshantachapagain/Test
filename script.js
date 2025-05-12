@@ -31,6 +31,6 @@ async function checkPassword(password) {
   }
 }
 
-// Example Usagesdda
+// Example Usagesddaddddd
 const passwordToCheck = '123456';
 checkPassword(passwordToCheck);
