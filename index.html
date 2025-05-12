@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zxcvbn Password Strength Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .strength {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+    }
+    .weak { background-color: red; }
+    .fair { background-color: orange; }
+    .good { background-color: yellow; color: black; }
+    .strong { background-color: green; }
+  </style>
+</head>
+<body>
+  <h1>Password Strength Checker</h1>
+  <p>Type a password to see its strength:</p>
+  <input type="password" id="password" placeholder="Enter your password" style="width: 300px; padding: 8px;">
+  <div id="feedback" class="strength"></div>
+
+  <!-- Include the zxcvbn library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+  <script>
+    const passwordInput = document.getElementById('password');
+    const feedbackDiv = document.getElementById('feedback');
+
+    passwordInput.addEventListener('input', () => {
+      const password = passwordInput.value;
+      const result = zxcvbn(password);
+
+      // Determine password strength based on zxcvbn score
+      const score = result.score;
+      let feedbackText = '';
+      let feedbackClass = '';
+
+      switch (score) {
+        case 0:
+          feedbackText = 'Very Weak';
+          feedbackClass = 'weak';
+          break;
+        case 1:
+          feedbackText = 'Weak';
+          feedbackClass = 'weak';
+          break;
+        case 2:
+          feedbackText = 'Fair';
+          feedbackClass = 'fair';
+          break;
+        case 3:
+          feedbackText = 'Good';
+          feedbackClass = 'good';
+          break;
+        case 4:
+          feedbackText = 'Strong';
+          feedbackClass = 'strong';
+          break;
+        default:
+          feedbackText = 'Unknown';
+      }
+
+      // Display feedback
+      feedbackDiv.textContent = `${feedbackText} (${result.crack_times_display.offline_slow_hashing_1e4_per_second} to crack)`;
+      feedbackDiv.className = `strength ${feedbackClass}`;
+    });
+  </script>
+</body>
+</html>
